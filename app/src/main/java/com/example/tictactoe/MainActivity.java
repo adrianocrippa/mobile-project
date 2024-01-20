@@ -205,9 +205,19 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    public void checkPlay(int x){
+    public boolean isTie() {
+        for (int i = 0; i < mat.length; i++) {
+            for (int j = 0; j < mat[i].length; j++) {
+                if (mat[i][j] == 0) {
+                    return false; // Found an empty cell, so it's not a tie.
+                }
+            }
+        }
+        return true; // No empty cells found, it's a tie.
+    }
 
-        if (victory(x)==true){
+    public void checkPlay(int x){
+        if (victory(x)) {
             AlertDialog.Builder winnerAlert = new AlertDialog.Builder(this);
             winnerAlert.setTitle("WINNER");
             winnerAlert.setMessage("Player "+winner+" winner!");
@@ -216,8 +226,15 @@ public class MainActivity extends AppCompatActivity {
             winnerAlert.create();
             winnerAlert.show();
             endGame();
+        } else if (isTie()) {
+            AlertDialog.Builder tieAlert = new AlertDialog.Builder(this);
+            tieAlert.setTitle("Game Over");
+            tieAlert.setMessage("It's a tie!");
+            tieAlert.setPositiveButton("OK", null);
+            tieAlert.create();
+            tieAlert.show();
+            endGame();
         }
-
     }
 
     public void endGame(){
